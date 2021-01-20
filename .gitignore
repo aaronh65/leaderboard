@@ -1,7 +1,1 @@
 *.pyc
-*.json
-*.log
-.project
-.pydevproject
-*.sh
-*.xml
