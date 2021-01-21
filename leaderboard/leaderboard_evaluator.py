@@ -21,6 +21,7 @@ import importlib
 import os
 import pkg_resources
 import sys
+
 import carla
 import signal
 
@@ -37,6 +38,7 @@ from leaderboard.utils.route_indexer import RouteIndexer
 
 
 sensors_to_icons = {
+    'sensor.camera.semantic_segmentation':        'carla_camera',
     'sensor.camera.rgb':        'carla_camera',
     'sensor.lidar.ray_cast':    'carla_lidar',
     'sensor.other.radar':       'carla_radar',
@@ -56,7 +58,7 @@ class LeaderboardEvaluator(object):
     ego_vehicles = []
 
     # Tunable parameters
-    client_timeout = 10.0  # in seconds
+    client_timeout = 900.0  # in seconds
     wait_for_world = 20.0  # in seconds
     frame_rate = 20.0      # in Hz
 
@@ -306,7 +308,8 @@ class LeaderboardEvaluator(object):
             self._load_and_wait_for_world(args, config.town, config.ego_vehicles)
             self._prepare_ego_vehicles(config.ego_vehicles, False)
             scenario = RouteScenario(world=self.world, config=config, debug_mode=args.debug)
-            self.statistics_manager.set_scenario(scenario.scenario)
+            #self.statistics_manager.set_scenario(scenario.scenario)
+            self.statistics_manager.set_scenario(scenario)
 
             # Night mode
             if config.weather.sun_altitude_angle < 0.0:
@@ -317,6 +320,7 @@ class LeaderboardEvaluator(object):
             if args.record:
                 self.client.start_recorder("{}/{}_rep{}.log".format(args.record, config.name, config.repetition_index))
             self.manager.load_scenario(scenario, self.agent_instance, config.repetition_index)
+            os.environ["REP"] = f'{config.repetition_index}'
 
         except Exception as e:
             # The scenario is wrong -> set the ejecution to crashed and stop
@@ -424,7 +428,7 @@ def main():
     parser.add_argument('--debug', type=int, help='Run with debug output', default=0)
     parser.add_argument('--record', type=str, default='',
                         help='Use CARLA recording feature to create a recording of the scenario')
-    parser.add_argument('--timeout', default="60.0",
+    parser.add_argument('--timeout', default="900.0",
                         help='Set the CARLA client timeout value in seconds')
 
     # simulation setup

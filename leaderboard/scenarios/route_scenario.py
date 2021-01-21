@@ -178,13 +178,15 @@ class RouteScenario(BasicScenario):
 
     category = "RouteScenario"
 
-    def __init__(self, world, config, debug_mode=0, criteria_enable=True):
+    def __init__(self, world, config, debug_mode=0, criteria_enable=True, env_config=None):
         """
         Setup all relevant parameters and create scenarios along route
         """
         self.config = config
+        self.env_config = env_config
         self.route = None
         self.sampled_scenarios_definitions = None
+        self.route_var_name_class_lookup = {}
 
         self._update_route(world, config, debug_mode>0)
 
@@ -392,6 +394,7 @@ class RouteScenario(BasicScenario):
                                                                           ego_vehicle.get_transform(),
                                                                           'hero')]
             route_var_name = "ScenarioRouteNumber{}".format(scenario_number)
+            self.route_var_name_class_lookup[route_var_name] = scenario_class.__name__
             scenario_configuration.route_var_name = route_var_name
             try:
                 scenario_instance = scenario_class(world, [ego_vehicle], scenario_configuration,
@@ -445,6 +448,10 @@ class RouteScenario(BasicScenario):
         """
         Set other_actors to the superset of all scenario actors
         """
+
+        if self.env_config and self.env_config.empty:
+            return
+
         # Create the background activity of the route
         town_amount = {
             'Town01': 120,
@@ -518,6 +525,7 @@ class RouteScenario(BasicScenario):
         )
 
         subbehavior.add_child(scenario_triggerer)  # make ScenarioTriggerer the first thing to be checked
+        self.scenario_triggerer = scenario_triggerer
         subbehavior.add_children(scenario_behaviors)
         subbehavior.add_child(Idle())  # The behaviours cannot make the route scenario stop
         behavior.add_child(subbehavior)
