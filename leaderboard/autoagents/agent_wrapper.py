@@ -93,7 +93,17 @@ class AgentWrapper(object):
             # These are the sensors spawned on the carla world
             else:
                 bp = bp_library.find(str(sensor_spec['type']))
-                if sensor_spec['type'].startswith('sensor.camera'):
+                if sensor_spec['type'].startswith('sensor.camera.semantic_segmentation'):
+                    bp.set_attribute('image_size_x', str(sensor_spec['width']))
+                    bp.set_attribute('image_size_y', str(sensor_spec['height']))
+                    bp.set_attribute('fov', str(sensor_spec['fov']))
+
+                    sensor_location = carla.Location(x=sensor_spec['x'], y=sensor_spec['y'],
+                                                     z=sensor_spec['z'])
+                    sensor_rotation = carla.Rotation(pitch=sensor_spec['pitch'],
+                                                     roll=sensor_spec['roll'],
+                                                     yaw=sensor_spec['yaw'])
+                elif sensor_spec['type'].startswith('sensor.camera'):
                     bp.set_attribute('image_size_x', str(sensor_spec['width']))
                     bp.set_attribute('image_size_y', str(sensor_spec['height']))
                     bp.set_attribute('fov', str(sensor_spec['fov']))
