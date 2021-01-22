@@ -26,7 +26,7 @@ from srunner.scenariomanager.traffic_events import TrafficEventType
 from leaderboard.scenarios.route_scenario import NUMBER_CLASS_TRANSLATION
 from leaderboard.utils.checkpoint_tools import fetch_dict, save_dict, create_default_json_msg
 
-SAVE_PATH_BASE = os.environ.get('BASE_SAVE_PATH', 0)
+SAVE_ROOT = os.environ.get('SAVE_ROOT', 0)
 ROUTE_NAME = os.environ.get('ROUTE_NAME', 0)
 
 PENALTY_COLLISION_PEDESTRIAN = 0.50
@@ -216,8 +216,8 @@ class StatisticsManager(object):
         
         # finish up and save
         rep_number = int(os.environ.get('REP', 0))
-        split = SAVE_PATH_BASE.split('/')[-1]
-        save_path = f'{SAVE_PATH_BASE}/plots/{ROUTE_NAME}/repetition_{rep_number:02d}.png'
+        split = SAVE_ROOT.split('/')[-1]
+        save_path = f'{SAVE_ROOT}/plots/{ROUTE_NAME}/repetition_{rep_number:02d}.png'
         title = f'{split}/{ROUTE_NAME}: repetition {rep_number:02d}'
         title = title.replace('_', ' ')
         plt.title(title)

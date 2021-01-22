@@ -96,6 +96,7 @@ class ScenarioManager(object):
         self.end_system_time = None
         self.end_game_time = None
 
+    #@profile
     def load_scenario(self, scenario, agent, rep_number):
         """
         Load a new scenario
