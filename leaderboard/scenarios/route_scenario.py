@@ -555,7 +555,8 @@ class RouteScenario(BasicScenario):
 
         blocked_criterion = ActorSpeedAboveThresholdTest(self.ego_vehicles[0],
                                                          speed_threshold=0.1,
-                                                         below_threshold_max_time=180.0,
+                                                         #below_threshold_max_time=180.0,
+                                                         below_threshold_max_time=90.0,
                                                          terminate_on_failure=True,
                                                          name="AgentBlockedTest")
 

@@ -17,6 +17,11 @@ PENALTY_COLLISION_STATIC = 0.65
 PENALTY_TRAFFIC_LIGHT = 0.70
 PENALTY_STOP = 0.80
 
+collision_types = [
+        TrafficEventType.COLLISION_PEDESTRIAN, 
+        TrafficEventType.COLLISION_VEHICLE,
+        TrafficEventType.COLLISION_STATIC]
+
 penalty_dict = {
         TrafficEventType.COLLISION_PEDESTRIAN  : PENALTY_COLLISION_PEDESTRIAN,
         TrafficEventType.COLLISION_VEHICLE  : PENALTY_COLLISION_VEHICLE,
