@@ -220,7 +220,7 @@ class RouteScenario(BasicScenario):
         world_annotations = RouteParser.parse_annotations_file(config.scenario_file)
 
         # prepare route's trajectory (interpolate and add the GPS route)
-        hop_resolution = 1.0 if self.env_config is None else self.env_config.hop_resolution
+        hop_resolution = 1.0
         gps_route, route = interpolate_trajectory(world, config.trajectory, hop_resolution)
 
         potential_scenarios_definitions, _ = RouteParser.scan_route_for_scenarios(
