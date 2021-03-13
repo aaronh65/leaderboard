@@ -321,7 +321,11 @@ class LeaderboardEvaluator(object):
             if args.record:
                 self.client.start_recorder("{}/{}_rep{}.log".format(args.record, config.name, config.repetition_index))
             self.manager.load_scenario(scenario, self.agent_instance, config.repetition_index)
-            os.environ["REP"] = f'{config.repetition_index}'
+            route_num = int(config.name.split('_')[-1])
+            route_name = f'route_{route_num:02d}'
+            repetition = f'repetition_{config.repetition_index:02d}'
+            os.environ['ROUTE_NAME'] = route_name
+            os.environ["REPETITION"] = repetition
 
         except Exception as e:
             # The scenario is wrong -> set the ejecution to crashed and stop

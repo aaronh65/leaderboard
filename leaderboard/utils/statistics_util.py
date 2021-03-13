@@ -3,13 +3,12 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from pathlib import Path
 from collections import deque
 from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 from srunner.scenariomanager.traffic_events import TrafficEventType
 
 colors = sns.color_palette("Paired")
-SAVE_ROOT = os.environ.get('SAVE_ROOT', 0)
-ROUTE_NAME = os.environ.get('ROUTE_NAME', 0)
 
 PENALTY_COLLISION_PEDESTRIAN = 0.50
 PENALTY_COLLISION_VEHICLE = 0.60
@@ -105,14 +104,16 @@ def plot_performance(score_route_list, infraction_list, checkpoint, scenario_tri
     ax.set_ylim([ymin, ymax])
     
     # finish up and save
-    rep_number = int(os.environ.get('REP', 0))
-    split = SAVE_ROOT.split('/')[-1]
-    save_path = f'{SAVE_ROOT}/plots/{ROUTE_NAME}/repetition_{rep_number:02d}.png'
-    title = f'{split}/{ROUTE_NAME}: repetition {rep_number:02d}'
+    SAVE_ROOT = os.environ.get('SAVE_ROOT', 0)
+    ROUTE_NAME = os.environ.get('ROUTE_NAME', 0)
+    REPETITION = os.environ.get('REPETITION', 0)
+    title = f'{ROUTE_NAME}/{REPETITION}'
     title = title.replace('_', ' ')
     plt.title(title)
     plt.legend(frameon=False, loc='lower right')
-    plt.savefig(save_path)
+    save_path = Path(f'{SAVE_ROOT}/plots/{ROUTE_NAME}')
+    save_path.mkdir(parents=True,exist_ok=True)
+    plt.savefig(str(save_path / f'{REPETITION}.png'))
     plt.clf()
 
 
